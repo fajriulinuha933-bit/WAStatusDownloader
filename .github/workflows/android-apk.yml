@@ -1,40 +1,40 @@
 name: Build WA Status Downloader APK
 
-On:
-  Workflow_dispatch:
-  Push:
-    Branches: [ main ]
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
 
-Jobs:
-  Build:
-    Runs-on: ubuntu-latest
-    Steps:
--	Name: Checkout
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+-	name: Checkout
         Uses: actions/checkout@v4
 
--	Name: Set up Java
-        Uses: actions/setup-java@v4
-        With:
-          Distribution: temurin
-          Java-version: ‘17’
+-	name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ‘17’
 
--	Name: Set up Android SDK
-        Uses: android-actions/setup-android@v3
-        With:
-          Api-level: 35
-          Build-tools: 35.0.0
+-	name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 35
+          build-tools: 35.0.0
 
--	Name: Accept SDK licenses
-        Run: yes | sdkmanager –sdk_root=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk} –licenses
+-	name: Accept SDK licenses
+        run: yes | sdkmanager –sdk_root=${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk} –licenses
 
--	Name: Build debug APK
-        Run: gradle assembleDebug –stacktrace
+-	name: Build debug APK
+        run: gradle assembleDebug –stacktrace
 
--	Name: Upload APK artifact
-        Uses: actions/upload-artifact@v4
-        With:
-          Name: WAStatusDownloader-debug-apk
-          Path: app/build/outputs/apk/debug/app-debug.apk
+-	name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: WAStatusDownloader-debug-apk
+          path: app/build/outputs/apk/debug/app-debug.apk
 
 
 
